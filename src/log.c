@@ -1,31 +1,31 @@
 #include "log.h"
 
-#define ERROR_PREFIX   "ERROR:"
-#define WARNING_PREFIX "WARNING:"
-#define DEBUG_PREFIX   "DEBUG:"
+#define ERROR_PREFIX   "ERROR: "
+#define WARNING_PREFIX "WARNING: "
+#define DEBUG_PREFIX   "DEBUG: "
 
 // TODO: dry this up and print prefixes
 
-int log_error( char *format, ... ) {
+void log_error( char *format, ... ) {
   va_list args;
   va_start( args, format );
-  vprintf( format, args );
+  _log(ERROR_PREFIX, "\n", format, args );
   va_end( args );
 }
 
-int log_debug( char *format, ... ) {
+void log_debug( char *format, ... ) {
   va_list args;
-  _log("debug: ", "\n", format, &args );
+  va_start( args, format );
+  _log(DEBUG_PREFIX, "\n", format, args );
+  va_end( args );
 }
 
-int _log( char *prefix, char *suffix, char *format, va_list *args ) {
+void _log( char *prefix, char *suffix, char *format, va_list args ) {
   if ( prefix != NULL )
-    fprintf( stdout, prefix );
+    fprintf( stdout, "%s", prefix );
 
-  va_start( *args, format );
-  vprintf( format, *args );
-  va_end( *args );
+  vprintf( format, args );
 
   if ( suffix != NULL )
-    fprintf( stdout, suffix );
+    fprintf( stdout, "%s", suffix );
 }

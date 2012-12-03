@@ -20,7 +20,7 @@ int create_window( settings_t *settings ) {
     log_error( "couldn't set video resolution (%ix%i@%i) (%s)", width, height, bpp, SDL_GetError() );
   }
 
-  log_debug( "successfully created window (%ix%i@%i) (%s)", width, height, bpp );
+  log_debug( "successfully created window (%ix%i@%i)", width, height, bpp );
 
   return 1;
 }

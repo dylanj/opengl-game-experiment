@@ -14,7 +14,6 @@
 
 int main(int argc, char *argv[])
 {
-
   settings_t settings = {
     .width = 800,
     .height = 600,
@@ -22,8 +21,9 @@ int main(int argc, char *argv[])
     .fullscreen = 1,
   };
 
-  log_debug( "hello %s", "world" );
+  log_debug( "hello (%s)", "world" );
   int result = create_window( &settings );
+  log_debug( "hello (%s) (%i)", "world", result );
 
   return 0;
 }
