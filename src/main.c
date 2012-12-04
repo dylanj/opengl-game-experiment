@@ -8,6 +8,7 @@
 #include <unistd.h>
 #include <errno.h>
 #include <arpa/inet.h>
+#include <X11/Xlib.h>
 
 #include "log.h"
 #include "app.h"
@@ -15,15 +16,23 @@
 
 int main(int argc, char *argv[])
 {
-  settings.width      = 800;
-  settings.height     = 600;
-  settings.bpp        = 24;
-  settings.fullscreen = 1;
+  settings_t *settings = malloc( sizeof( settings_t ) );
 
-  settings.exit_game  = 0;
-  settings.should_exit = 0;
+  settings->width      = 800;
+  settings->height     = 600;
+  settings->bpp        = 24;
+  settings->fullscreen = 1;
 
-  int result = create_window( &settings );
+  settings->exit_game  = 0;
+  settings->should_exit = 0;
+
+  XInitThreads();
+  int sdl_flags  = SDL_INIT_EVERYTHING;
+
+  if ( SDL_Init( sdl_flags ) < 0 ) {
+    log_error( "couldn't init sdl (%s)", SDL_GetError() );
+    return 0;
+  }
 
   //main
   //input thread
@@ -31,21 +40,28 @@ int main(int argc, char *argv[])
   //network thread
   //audio thread
 
-  game_start_input_thread();
-  game_start_logic_thread();
+  game_start_video_thread( settings );
+  if ( !settings->video_thread )
+    settings->exit_game = 1;
 
+  game_start_input_thread( settings );
+  if ( !settings->input_thread )
+    settings->exit_game = 1;
+
+  game_start_logic_thread( settings );
+  if ( !settings->logic_thread )
+    settings->exit_game = 1;
+
+  log_debug( "all threads spawned" );
   /* while ( !settings->exit_game ) { */
   /*   game_process_local_input(); */
   /*   game_update_entities(); */
   /*   game_draw_entities(); */
   /* } */
 
-  thread_cleanup( settings.input_thread );
-  thread_cleanup( settings.logic_thread );
-
-  log_debug( "hello (%s)", "world" );
-  log_warning( "hello (%s) (%i)", "world", result );
-  log_error( "hello (%s) (%i)", "world", result );
+  thread_cleanup( settings->video_thread );
+  thread_cleanup( settings->input_thread );
+  thread_cleanup( settings->logic_thread );
 
   return 0;
 }

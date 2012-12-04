@@ -2,6 +2,7 @@
 #define app_h
 
 #include <SDL.h> // todo: get rid of this
+#include <SDL_opengl.h>
 #include "log.h"
 #include "thread.h"
 
@@ -16,12 +17,11 @@ typedef struct {
   int exit_game;
   int should_exit;
 
+  thread_t *video_thread;
   thread_t *input_thread;
   thread_t *logic_thread;
 
 } settings_t;
-
-settings_t settings;
 
 int create_window( settings_t * );
 

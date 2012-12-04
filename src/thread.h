@@ -9,7 +9,7 @@ typedef struct thread_s {
 } thread_t;
 
 thread_t *thread_create( int (*)(void *), void *, char * );
-int       thread_cleanup( thread_t * );
+void      thread_cleanup( thread_t * );
 
 #endif
 

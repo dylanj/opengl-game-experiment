@@ -3,8 +3,6 @@
 #include "log.h"
 #include "thread.h"
 
-extern settings_t settings;
-
 thread_t *thread_create( int (*fn)(void *), void *data, char *thread_name ) {
   thread_t *thread = malloc( sizeof( thread_t ) );
 
@@ -16,7 +14,6 @@ thread_t *thread_create( int (*fn)(void *), void *data, char *thread_name ) {
 
   if ( thread->thread == NULL ) {
     log_error( "failed to create (%s) thread (%s)", thread_name, SDL_GetError() );
-    settings.should_exit = 1;
   }
 
   // TODO: keep track of threads automatically.
@@ -24,7 +21,7 @@ thread_t *thread_create( int (*fn)(void *), void *data, char *thread_name ) {
   return thread;
 }
 
-int thread_cleanup( thread_t *thread ) {
+void thread_cleanup( thread_t *thread ) {
   SDL_WaitThread( thread->thread, NULL );
 
   log_debug( "cleaning up thread %s", thread->name );

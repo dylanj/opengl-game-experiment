@@ -4,7 +4,7 @@
 CC=gcc
 PROGRAM=client
 CPPFLAGS=-Wall -Wextra -Wformat -std=c99 `sdl-config --cflags`
-LDLIBS=-pthread -lm -ldl -lSDL
+LDLIBS=-pthread -lm -ldl -lSDL -lGL -lX11
 OBJDIR=obj
 OUTDIR=bin
 
