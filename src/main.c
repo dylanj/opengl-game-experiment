@@ -15,15 +15,17 @@
 int main(int argc, char *argv[])
 {
   settings_t settings = {
-    .width = 800,
-    .height = 600,
-    .bpp = 24,
+    .width      = 800,
+    .height     = 600,
+    .bpp        = 24,
     .fullscreen = 1,
   };
 
-  log_debug( "hello (%s)", "world" );
   int result = create_window( &settings );
-  log_debug( "hello (%s) (%i)", "world", result );
+
+  log_debug( "hello (%s)", "world" );
+  log_warning( "hello (%s) (%i)", "world", result );
+  log_error( "hello (%s) (%i)", "world", result );
 
   return 0;
 }
