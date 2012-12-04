@@ -11,8 +11,8 @@ OUTDIR=bin
 vpath %.c src
 vpath %.h src
 
-objects = $(addprefix $(OBJDIR)/, app.o main.o log.o)
-headers = $(log.h app.h)
+objects = $(addprefix $(OBJDIR)/, app.o game.o thread.o main.o log.o)
+headers = $(log.h app.h game.h thread.h)
 
 ku: $(objects)
 	$(CC) $(CPPFLAGS) -g -o $(OUTDIR)/$(PROGRAM) $(objects) $(LDLIBS)

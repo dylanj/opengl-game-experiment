@@ -11,17 +11,37 @@
 
 #include "log.h"
 #include "app.h"
+#include "game.h"
 
 int main(int argc, char *argv[])
 {
-  settings_t settings = {
-    .width      = 800,
-    .height     = 600,
-    .bpp        = 24,
-    .fullscreen = 1,
-  };
+  settings.width      = 800;
+  settings.height     = 600;
+  settings.bpp        = 24;
+  settings.fullscreen = 1;
+
+  settings.exit_game  = 0;
+  settings.should_exit = 0;
 
   int result = create_window( &settings );
+
+  //main
+  //input thread
+  //video thread
+  //network thread
+  //audio thread
+
+  game_start_input_thread();
+  game_start_logic_thread();
+
+  /* while ( !settings->exit_game ) { */
+  /*   game_process_local_input(); */
+  /*   game_update_entities(); */
+  /*   game_draw_entities(); */
+  /* } */
+
+  thread_cleanup( settings.input_thread );
+  thread_cleanup( settings.logic_thread );
 
   log_debug( "hello (%s)", "world" );
   log_warning( "hello (%s) (%i)", "world", result );
@@ -82,3 +102,4 @@ int main(int argc, char *argv[])
     return 0;
 }
 */
+
